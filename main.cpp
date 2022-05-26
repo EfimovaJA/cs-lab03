@@ -47,11 +47,11 @@ int main()
 {
     //Ввод данных
     Input data;
-    data = read_input(cin, 1);
+    const auto input = read_input(cin, true);
     //Расчет гистограммы
-    const auto bins = make_histogramm(data);
+    const auto bins = make_histogram(input);
     //Вывод гистограммы
-    show_histogramm_svg(bins);
+    show_histogram_svg(bins);
 
     return 0;
 }
