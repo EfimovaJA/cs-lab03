@@ -3,7 +3,7 @@
 #include <istream>
 #include "histogram.h"
 #include "svg.h"
-
+#include <curl/curl.h>
 using namespace std;
 
 vector<double> input_numbers(istream& in, size_t count)
@@ -45,6 +45,7 @@ Input read_input(istream& in, bool prompt)
 
 int main()
 {
+	curl_global_init(CURL_GLOBAL_ALL);
     //Ввод данных
     Input data;
     const auto input = read_input(cin, true);
@@ -52,6 +53,4 @@ int main()
     const auto bins = make_histogram(input);
     //Вывод гистограммы
     show_histogram_svg(bins);
-
-    return 0;
 }
