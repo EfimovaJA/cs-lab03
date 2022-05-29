@@ -11,6 +11,7 @@ using namespace std;
 vector<double> input_numbers(istream& in, size_t count)
 {
     vector<double> result(count);
+
     for(size_t i = 0; i < count; i++)
     {
         in >> result[i];
@@ -43,6 +44,17 @@ Input read_input(istream& in, bool prompt)
 
     return data;
 }
+
+vector <size_t> procent (size_t number_count, const vector <size_t>& bins)
+{
+vector <size_t> x (bins.size());
+    for ( size_t i=0; i< bins.size(); i++)
+    {
+        x[i] = static_cast<double> (bins[i]) / number_count * 100;
+    }
+    return x;
+}
+
 
 size_t
 write_data(void* items, size_t item_size, size_t item_count, void* ctx)
@@ -94,5 +106,7 @@ main(int argc, char* argv[])
     }
 
     const auto bins = make_histogram(input);
-    show_histogram_svg(bins);
+
+    const auto proc = procent (input.numbers.size(), bins) ;
+    show_histogram_svg(bins, proc);
 }
