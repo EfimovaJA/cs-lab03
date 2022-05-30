@@ -23,7 +23,7 @@ void find_minmax(const vector<double>& numbers, double& min, double& max)
     }
 }
 
-vector<size_t> make_histogramm(Input data)
+vector<size_t> make_histogram(Input data)
 {
     const vector<double>& numbers = data.numbers;
     size_t& bin_count = data.bin_count;
@@ -55,7 +55,7 @@ vector<size_t> make_histogramm(Input data)
 }
 
 
-void show_histogramm_text(const vector<size_t>& bins)
+void show_histogram_text(const vector<size_t>& bins)
 {
     size_t SCREEN_WIDTH = 80;
     const size_t max_asterix = SCREEN_WIDTH - 3 - 1;
