@@ -1,0 +1,75 @@
+# depslib dependency file v1.0
+1653898198 source:c:\users\luiza\desktop\lab03\project\svg.cpp
+	"svg.h"
+	<iostream>
+	<vector>
+	<math.h>
+
+1653903074 c:\users\luiza\desktop\lab03\project\svg.h
+	<vector>
+	<iostream>
+	<math.h>
+	<winsock2.h>
+	<windows.h>
+
+1653901835 source:c:\users\luiza\desktop\lab03\project\histogram.cpp
+	"histogram.h"
+
+1653901882 c:\users\luiza\desktop\lab03\project\histogram.h
+	<vector>
+	<iostream>
+	<curl/curl.h>
+	<sstream>
+	<string>
+	<windows.h>
+
+1653902017 source:c:\users\luiza\desktop\lab03\project\main.cpp
+	<iostream>
+	<vector>
+	"histogram.h"
+	"svg.h"
+
+1652068340 c:\users\luiza\desktop\lab03\project\curl\include\curl\curl.h
+	"curlver.h"
+	"system.h"
+	<stdio.h>
+	<limits.h>
+	<osreldate.h>
+	<sys/types.h>
+	<time.h>
+	<winsock2.h>
+	<ws2tcpip.h>
+	<sys/select.h>
+	<sys/socket.h>
+	<sys/time.h>
+	"easy.h"
+	"multi.h"
+	"urlapi.h"
+	"options.h"
+	"header.h"
+	"typecheck-gcc.h"
+
+1652235520 c:\users\luiza\desktop\lab03\project\curl\include\curl\curlver.h
+
+1652068340 c:\users\luiza\desktop\lab03\project\curl\include\curl\system.h
+	<winsock2.h>
+	<windows.h>
+	<ws2tcpip.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/poll.h>
+
+1652068340 c:\users\luiza\desktop\lab03\project\curl\include\curl\easy.h
+
+1652068340 c:\users\luiza\desktop\lab03\project\curl\include\curl\multi.h
+	"curl.h"
+
+1652068340 c:\users\luiza\desktop\lab03\project\curl\include\curl\urlapi.h
+	"curl.h"
+
+1652068340 c:\users\luiza\desktop\lab03\project\curl\include\curl\options.h
+
+1652072610 c:\users\luiza\desktop\lab03\project\curl\include\curl\header.h
+
+1652068340 c:\users\luiza\desktop\lab03\project\curl\include\curl\typecheck-gcc.h
+
