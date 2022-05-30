@@ -28,6 +28,15 @@ string get_system_info()
     return result;
 }
 
+string get_computer_name()
+{
+    DWORD max_len = MAX_COMPUTERNAME_LENGTH + 1;
+    char computer_name[max_len];
+    GetComputerNameA(computer_name, &max_len);
+    string result = computer_name;
+
+    return result;
+}
 
 void svg_begin(double width, double height)
 {
@@ -65,8 +74,8 @@ void show_histogram_svg(const vector<size_t>& bins, const vector <size_t> proc)
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
     const auto PROCENT = 50;
-	const auto FR_EDGE = 5;
-	const auto SYS_INFO_LEFT = 20;
+    const auto FR_EDGE = 5;
+    const auto SYS_INFO_LEFT = 20;
 
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     const auto MAX_BIN_WIDTH = IMAGE_WIDTH - TEXT_WIDTH - PROCENT;
@@ -88,13 +97,15 @@ void show_histogram_svg(const vector<size_t>& bins, const vector <size_t> proc)
         {
             bin_width = MAX_BIN_WIDTH * ( bin_width / max_bins_width) - 1 ;
         }
-		svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bins[i]));
+        svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bins[i]));
         svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT);
         svg_text(TEXT_WIDTH + max_bins_width + FR_EDGE, top + TEXT_BASELINE, to_string(proc[i]) + '%') ;
         top += BIN_HEIGHT;
     }
 
     string system_info = get_system_info();
+    string computer_name = get_computer_name();
     svg_text(SYS_INFO_LEFT, BIN_HEIGHT * bins.size() + TEXT_BASELINE, system_info);
+    svg_text(SYS_INFO_LEFT, BIN_HEIGHT * bins.size() + 2 * TEXT_BASELINE, computer_name);
     svg_end();
 }
