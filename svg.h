@@ -1,9 +1,13 @@
 #include <vector>
 #include <iostream>
 #include <math.h>
+#include <winsock2.h>
+#include <windows.h>
 using namespace std;
 #ifndef SVG_H_INCLUDED
 #define SVG_H_INCLUDED
+
+string get_system_info();
 
 void svg_begin(double width, double height);
 

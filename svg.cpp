@@ -4,6 +4,31 @@
 #include <math.h>
 
 using namespace std;
+
+string get_system_info()
+{
+    string result;
+    const size_t MAX_LEN = 256;
+    char str_info[MAX_LEN];
+
+    DWORD info = GetVersion();
+    DWORD mask =0x0000ffff;
+    DWORD version = info & mask;
+    DWORD version_major = version & 0x00ff;
+    DWORD version_minor = version & 0xff00;
+    sprintf(str_info, "Windows v%u.%u", version_major, version_minor);
+    result = str_info;
+    if((info & 0x8000'0000) == 0)
+    {
+        DWORD build = info >> 16;
+        sprintf(str_info, " (build %u)\n", build);
+        result += str_info;
+    }
+
+    return result;
+}
+
+
 void svg_begin(double width, double height)
 {
     cout << "<?xml version='1.0' encoding='UTF-8'?>\n";
@@ -41,6 +66,8 @@ void show_histogram_svg(const vector<size_t>& bins, const vector <size_t> proc)
     const auto BLOCK_WIDTH = 10;
     const auto PROCENT = 50;
 	const auto FR_EDGE = 5;
+	const auto SYS_INFO_LEFT = 20;
+
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     const auto MAX_BIN_WIDTH = IMAGE_WIDTH - TEXT_WIDTH - PROCENT;
     size_t max_bins_width = bins[0];
@@ -66,5 +93,8 @@ void show_histogram_svg(const vector<size_t>& bins, const vector <size_t> proc)
         svg_text(TEXT_WIDTH + max_bins_width + FR_EDGE, top + TEXT_BASELINE, to_string(proc[i]) + '%') ;
         top += BIN_HEIGHT;
     }
+
+    string system_info = get_system_info();
+    svg_text(SYS_INFO_LEFT, BIN_HEIGHT * bins.size() + TEXT_BASELINE, system_info);
     svg_end();
 }
