@@ -5,7 +5,7 @@
 #include <curl/curl.h>
 #include <sstream>
 #include <string>
-
+#include <windows.h>
 using namespace std;
 
 vector<double> input_numbers(istream& in, size_t count)
@@ -47,7 +47,7 @@ Input read_input(istream& in, bool prompt)
 
 vector <size_t> procent (size_t number_count, const vector <size_t>& bins)
 {
-vector <size_t> x (bins.size());
+    vector <size_t> x (bins.size());
     for ( size_t i=0; i< bins.size(); i++)
     {
         x[i] = static_cast<double> (bins[i]) / number_count * 100;
@@ -96,6 +96,10 @@ int
 main(int argc, char* argv[])
 {
 
+    DWORD info = GetVersion();
+    printf("System info: %u or 0x%x\n", info, info);
+
+    return 0;
     Input input;
     if (argc > 1)
     {
@@ -103,13 +107,19 @@ main(int argc, char* argv[])
 
         for (size_t i=0; i < argc; i++)
         {
-            if (string(argv[i]) == "-bins && (argv[6] > 0) && (argv[6] < 10) ") {
-			const auto bins=argv[6];            }
-        else { cerr << "Please enter the number of -bins...";
-        return 0; }
+            if (string(argv[i]) == "-bins && (argv[6] > 0) && (argv[6] < 10) ")
+            {
+                const auto bins=argv[6];
+            }
+            else
+            {
+                cerr << "Please enter the number of -bins...";
+                return 0;
+            }
 
 
-    } }
+        }
+    }
     else
     {
         input = read_input(cin, true);
