@@ -99,11 +99,21 @@ main(int argc, char* argv[])
     if (argc > 1)
     {
         input = download(argv[1]);
-    }
+
+        for (size_t i=0; i < argc; i++)
+        {
+            if (string(argv[i]) == "-bins && (argv[6] > 0) && (argv[6] < 10) ") {
+			const auto bins=argv[6];            }
+        else { cerr << "Please enter the number of -bins...";
+        return 0; }
+
+
+    } }
     else
     {
         input = read_input(cin, true);
     }
+
 
     const auto bins = make_histogram(input);
 
