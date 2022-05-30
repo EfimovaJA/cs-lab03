@@ -1,115 +1,129 @@
 #include <iostream>
 #include <vector>
-#include <math.h>
 #include "histogram.h"
 #include "svg.h"
+#include <curl/curl.h>
+#include <sstream>
+#include <string>
+
 using namespace std;
 
-
-vector <double> input_numbers (istream& in, size_t count)
+vector<double> input_numbers(istream& in, size_t count)
 {
     vector<double> result(count);
-    for (size_t i = 0; i < count; i++)
+
+    for(size_t i = 0; i < count; i++)
     {
         in >> result[i];
     }
     return result;
 }
 
-
-
-vector <size_t> make_histogram( const vector<double> numbers, size_t bin_count)
+Input read_input(istream& in, bool prompt)
 {
-    double min, max;
-    find_minmax( numbers, min, max) ;
-    vector<size_t> bins(bin_count,0); //переменная показывающая количество чисел в заданном диапазоне
-    double bin_size =( max-min)/ bin_count; //разме корзины
-    for(size_t i=0; i < numbers.size(); i++)
-    {
-        bool found=false;
-        for ( size_t j = 0; j <( bin_count-1) && !found; j++)
-        {
-            auto lo = min + j * bin_size; // нижняя граница корзины
-            auto hi = min + (j+1) * bin_size; // верхняя граница корзины
-            if((lo <= numbers[i]) && (numbers[i] < hi))
-            {
-                bins[j]++;
-                found = true;
-            }
-        }
-        if (!found)  //для максимального числа
-        {
-            bins [bin_count-1]++;
+    Input data;
 
-        }
-    }
-    return bins;
-}
-
-show_histogram_text(const vector <size_t>& bins)
-{
-    const size_t SCREEN_WIDTH = 80;
-    const size_t MAX_ASTERISK = SCREEN_WIDTH -3-1;
-
-    size_t max_bin = bins[0]; //максимальная высота столбца
-    for (size_t bin: bins)
-    {
-        if(max_bin < bin)
-        {
-            max_bin = bin;
-        }
-    }
-    for(size_t bin: bins)
-    {
-        size_t height = bin;
-        //проверить, нужно ли масштабировать данные, если нужно, пересчитать height
-        if (max_bin > MAX_ASTERISK)
-        {
-            height = MAX_ASTERISK*(static_cast<double> (bin) / max_bin); //коэфициент
-        }
-        size_t procent= bin;
-        if (procent < 100)
-        {
-            cout << " ";
-        }
-        if (procent < 10)
-        {
-            cout<< " ";
-        }
-        cout << procent << "|";
-        for (size_t i=0; i < height; i++)
-        {
-            cout<< "*";
-        }
-        cout << endl;
-    }
-}
-
-
-
-int main()
-{
-    //ввод данных
     size_t number_count;
-    cerr<< "Enter number count:";
-    cin>> number_count;
+    if (prompt)
+    {
+        cerr << "Enter number count: ";
+    }
+    in >> number_count;
 
-    const auto numbers = input_numbers(cin, number_count);
+    if(prompt)
+    {
+        cerr << "Enter numbers: ";
+    }
+    data.numbers = input_numbers(in, number_count);
 
-    size_t bin_count;
-    cerr<< "Enter bin count:" ;
-    cin>> bin_count;
+    if(prompt)
+    {
+        cerr << "Enter bin count: ";
+    }
+    in >> data.bin_count;
+
+    return data;
+}
+
+vector <size_t> procent (size_t number_count, const vector <size_t>& bins)
+{
+vector <size_t> x (bins.size());
+    for ( size_t i=0; i< bins.size(); i++)
+    {
+        x[i] = static_cast<double> (bins[i]) / number_count * 100;
+    }
+    return x;
+}
 
 
-    //рассчет гистограммы
-    const auto bins= make_histogram(numbers, bin_count);
+size_t
+write_data(void* items, size_t item_size, size_t item_count, void* ctx)
+{
+// TODO: Г¤Г®ГЇГЁГ±Г»ГўГ ГІГј Г¤Г Г­Г­Г»ГҐ ГЄ ГЎГіГґГҐГ°Гі.
+    size_t data_size=item_size*item_count;
+    stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
+    buffer->write(reinterpret_cast<const char*>(items), data_size);
+    return data_size;
+}
 
-	const auto proc = procent (number_count, bins) ;
-    //вывод гистограммы
-    show_histogram_svg (bins, proc);
+Input
+download(const string& address)
+{
+    stringstream buffer;
 
+// TODO: Г§Г ГЇГ®Г«Г­ГЁГІГј ГЎГіГґГҐГ°.
+    curl_global_init(CURL_GLOBAL_ALL);
+    CURL *curl = curl_easy_init();
+    if(curl)
+    {
+        CURLcode res;
+        curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+        res = curl_easy_perform(curl);
+        if (res)
+        {
+            cerr << curl_easy_strerror(res) << endl;
+            exit(1);
+        }
+    }
+    curl_easy_cleanup(curl);
+    return read_input(buffer, false);
+
+}
+
+int
+main(int argc, char* argv[])
+{
+	 const char* name = "Commander Shepard";
+    int year = 2154;
+    printf("%s was born in %d.\n", name, year);
+    // Commander Shepard was born in 2154.
+    printf("n = %010x\n", 0x1234567); // 01234567
 
     return 0;
+    Input input;
+    if (argc > 1)
+    {
+        input = download(argv[1]);
+
+        for (size_t i=0; i < argc; i++)
+        {
+            if (string(argv[i]) == "-bins && (argv[6] > 0) && (argv[6] < 10) ") {
+			const auto bins=argv[6];            }
+        else { cerr << "Please enter the number of -bins...";
+        return 0; }
+
+
+    } }
+    else
+    {
+        input = read_input(cin, true);
+    }
+
+
+    const auto bins = make_histogram(input);
+
+    const auto proc = procent (input.numbers.size(), bins) ;
+    show_histogram_svg(bins, proc);
 }
-
-
